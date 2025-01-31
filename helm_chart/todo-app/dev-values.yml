@@ -7,7 +7,7 @@ image:
   tag: "97"
 
 
-imagePullSecrets: []
+imagePullSecrets: acr-auth
 
 nameOverride: ""
 fullnameOverride: ""
