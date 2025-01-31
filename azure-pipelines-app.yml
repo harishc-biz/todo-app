@@ -15,3 +15,10 @@ steps:
       repository: 'todo-app'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
+
+  - task: CmdLine@2
+    displayName: 'Update image tag in dev-values.yaml'
+    inputs:
+      script: |
+        chmod +x update-image-tag.sh
+        ./update-image-tag.sh $(Build.BuildId)
