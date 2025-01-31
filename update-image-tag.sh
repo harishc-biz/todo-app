@@ -8,7 +8,7 @@ if [ -z "$1" ]; then
 fi
 
 NEW_TAG=$1
-VALUES_FILE="/helm_chart/todo-app/dev-values.yml"
+VALUES_FILE="helm_chart/todo-app/dev-values.yml"
 
 
 # Check if the values.yaml file exists
