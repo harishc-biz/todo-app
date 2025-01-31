@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'todo-app'
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Build and Push Docker Image'
+  inputs:
+    azureSubscription: '<your-service-connection>'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Logging in to ACR..."
+      az acr login --name acrtododev
+
+      echo "Building the Docker image..."
+      docker build -t acrtododev.azurecr.io/${imageName}:$(Build.BuildId) .
+
+      echo "Pushing the Docker image to ACR..."
+      docker push acrtododev.azurecr.io/${imageName}:$(Build.BuildId)
+
+      echo "Docker image pushed successfully."
+  
