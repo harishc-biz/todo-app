@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo-app
+  namespace: argocd
+  labels:
+    idp-app/type: todo-app
+    platform-component/type: app-of-apps
+spec:
+  destination:
+    namespace: todo-app
+    server: https://kubernetes.default.svc
+  project: dev
+  source:
+    path: "todo-app"
+    repoURL: https://github.com/harishc-biz/todo-app
+    targetRevision: main
+    helm:
+      valueFiles:
+        - dev-values.yaml
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
