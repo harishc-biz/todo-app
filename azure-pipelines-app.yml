@@ -8,20 +8,20 @@ variables:
   imageName: 'todo-app'
 
 steps:
-  - task: Docker@2
-    displayName: 'Build and push an image to container registry'
-    inputs:
-      containerRegistry: 'acrtododev-acr'
-      repository: 'todo-app'
-      command: 'buildAndPush'
-      Dockerfile: '**/Dockerfile'
+  # - task: Docker@2
+  #   displayName: 'Build and push an image to container registry'
+  #   inputs:
+  #     containerRegistry: 'acrtododev-acr'
+  #     repository: 'todo-app'
+  #     command: 'buildAndPush'
+  #     Dockerfile: '**/Dockerfile'
 
   - script: |
       cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
       
       git checkout main
       
-      git pull origin main
+      git pull
       
       VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
       
@@ -32,11 +32,12 @@ steps:
       git config --global user.email "harishdravid9845@gmail.com"
       git config --global user.name "harishc-biz"
       
-      # Add all changes to the staging area
+      git login -u harishc-biz -p $(System.AccessToken)
+
+      git status
+      
       git add --all
       
-      # Commit the changes
       git commit -m "Latest Values file updated with tag $(Build.BuildId)"
       
-      # Push the changes to the main branch
       git push origin main
