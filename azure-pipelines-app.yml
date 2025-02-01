@@ -8,19 +8,19 @@ variables:
   imageName: 'todo-app'
 
 stages:
-- stage: Docker_Build_and_Push
-  displayName: 'Build and Push Docker Image'
-  jobs: 
-  - job: Build
-    displayName: 'Build'
-    steps:
-    - task: Docker@2
-      displayName: 'Build and push an image to container registry'
-      inputs:
-        containerRegistry: 'acrtododev-acr'
-        repository: 'todo-app'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+# - stage: Docker_Build_and_Push
+#   displayName: 'Build and Push Docker Image'
+#   jobs: 
+#   - job: Build
+#     displayName: 'Build'
+#     steps:
+#     - task: Docker@2
+#       displayName: 'Build and push an image to container registry'
+#       inputs:
+#         containerRegistry: 'acrtododev-acr'
+#         repository: 'todo-app'
+#         command: 'buildAndPush'
+#         Dockerfile: '**/Dockerfile'
 
 - stage: Helm_Chart_Update
   displayName: 'Update Helm Chart'

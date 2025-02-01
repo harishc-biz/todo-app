@@ -12,7 +12,7 @@ spec:
     server: https://kubernetes.default.svc
   project: dev
   source:
-    path: "todo-app"
+    path: "helm_chart/todo-app"
     repoURL: https://github.com/harishc-biz/todo-app
     targetRevision: main
     helm:
