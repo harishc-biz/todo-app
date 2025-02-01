@@ -26,21 +26,43 @@ steps:
   - task: CmdLine@2
     displayName: 'Update the value yaml with new image tag'
     inputs:
-      script: |
-        cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
-        git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
-        git fetch --all
-        git checkout main
-        git pull origin main
+      - script: |
+          # Navigate to the Helm chart directory
+          cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
 
-        VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
+          # Set the remote URL with the GitHub token
+          git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
 
-        sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
+          # Fetch all branches and tags from the remote
+          git fetch --all
 
-        git config --global user.email "harishdravid9845@gmail.com"
-        git config --global user.name "harishc-biz"
+          # Check out the main branch
+          git checkout main
 
-        git add --all
-        git commit -m "Latest Values file updated with tag $(Build.BuildId)"
-        git push origin main
-        echo "Values file updated successfully"
+          # Pull the latest changes from the main branch
+          git pull origin main
+
+          # Define the path to the values file
+          VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
+
+          # Update the image tag in the values file
+          sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
+
+          # Configure Git
+          git config --global user.email "harishdravid9845@gmail.com"
+          git config --global user.name "harishc-biz"
+
+          # Add all changes to the staging area
+          git add --all
+
+          # Commit the changes
+          git commit -m "Latest Values file updated with tag $(Build.BuildId)"
+
+          # Push the changes to the main branch
+          git push origin main
+
+          # Print success message
+          echo "Values file updated successfully"
+        env:
+          github-token: $(github-token) # Reference the GitHub token secret
+        displayName: 'Update Helm Chart Values'
