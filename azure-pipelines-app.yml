@@ -10,18 +10,12 @@ variables:
 steps:
 
   - task: Docker@2
+    displayName: 'Build and push an image to container registry'
     inputs:
       containerRegistry: 'acrtododev-acr'
       repository: 'todo-app'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
-
-  # - task: CmdLine@2
-  #   displayName: 'Update image tag in dev-values.yaml'
-  #   inputs:
-  #     script: |
-  #       chmod +x update-image-tag.sh
-  #       ./update-image-tag.sh $(Build.BuildId)
 
   - task: CmdLine@2
     displayName: 'Update the value yaml with new image tag'
@@ -64,5 +58,4 @@ steps:
           # Print success message
           echo "Values file updated successfully"
         env:
-          github-token: $(github-token) # Reference the GitHub token secret
-        displayName: 'Update Helm Chart Values'
+          github-token: $(github-token)
