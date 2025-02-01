@@ -1,11 +1,13 @@
 #!/bin/bash
 
-set -x
+set -e  # Exit immediately if a command exits with a non-zero status
+set -x  # Print commands and their arguments as they are executed
 
-# Set the repository URL
+# Set the repository URL with the PAT
 REPO_URL="https://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@github.com/harishc-biz/todo-app.git"
 VALUES_FILE="helm_chart/todo-app/dev-values.yml"
 
+# Configure Git
 git config --global user.name "harishc-biz"
 git config --global user.email "harishdravid9845@gmail.com"
 
@@ -20,7 +22,7 @@ cd /tmp/temp_repo
 sed -i "s/tag: .*/tag: $1/" $VALUES_FILE
 
 # Add the modified files
-git add .
+git add $VALUES_FILE
 
 # Commit the changes
 git commit -m "Update Docker image tag to $1"
