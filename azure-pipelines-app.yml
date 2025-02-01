@@ -6,6 +6,8 @@ pool:
 
 variables:
   imageName: 'todo-app'
+  GITHUB_PAT: $(GITHUB_PAT)
+
 
 stages:
 # - stage: Docker_Build_and_Push
@@ -29,6 +31,7 @@ stages:
     displayName: 'Update values file'
     steps:
     - checkout: self
+      persistCredentials: true
     - task: ShellScript@2
       inputs:
         scriptPath: 'update-values.sh'
