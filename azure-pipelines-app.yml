@@ -19,22 +19,10 @@ steps:
   - script: |
       cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
       
-      # Set the remote URL with the GitHub token
-      git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
-      
-      # Disable Git prompts
-      git config --global credential.helper store
-      
-      # Fetch all branches and tags from the remote
-      git fetch --all
-      
-      # Check out the main branch
       git checkout main
       
-      # Pull the latest changes from the main branch
       git pull origin main
       
-      # Define the path to the values file
       VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
       
       # Update the image tag in the values file
@@ -52,9 +40,3 @@ steps:
       
       # Push the changes to the main branch
       git push origin main
-      
-      # Print success message
-      echo "Values file updated successfully"
-    env:
-      github-token: $(github-token) # Ensure this secret is defined in Azure DevOps
-    displayName: 'Update Helm Chart Values'
