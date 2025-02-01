@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: todo-app
-  namespace: argocd
+  namespace: todo-app
   labels:
     idp-app/type: todo-app
     platform-component/type: app-of-apps
@@ -10,14 +10,14 @@ spec:
   destination:
     namespace: todo-app
     server: https://kubernetes.default.svc
-  project: dev
+  project: default
   source:
-    path: "helm_chart/todo-app"
+    path: helm_chart/todo-app
     repoURL: https://github.com/harishc-biz/todo-app
-    targetRevision: main
+    targetRevision: HEAD
     helm:
       valueFiles:
-        - dev-values.yaml
+        - dev-values.yml
   syncPolicy:
     automated:
       prune: false
