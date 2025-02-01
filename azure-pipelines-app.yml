@@ -21,9 +21,9 @@ steps:
     displayName: 'Update the value yaml with new image tag'
     inputs:
       - script: |
-
+        
           cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
-
+          
           git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
           git fetch --all
 
@@ -45,5 +45,3 @@ steps:
           git push origin main
 
           echo "Values file updated successfully"
-        env:
-          github-token: $(github-token)
