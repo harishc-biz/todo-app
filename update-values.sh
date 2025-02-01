@@ -12,13 +12,18 @@ git config --global user.name "harishc-biz"
 git config --global user.email "harishdravid9845@gmail.com"
 
 # Clone the git repository into the /tmp directory
-git clone "$REPO_URL" /tmp/temp_repo
+# git clone "$REPO_URL" /tmp/temp_repo
 
 # Navigate into the cloned repository directory
-cd /tmp/temp_repo
+# cd /tmp/temp_repo
 
 # Make changes to the Kubernetes manifest file(s)
 # For example, let's say you want to change the image tag in a deployment.yaml file
+
+git pull origin main
+
+git checkout main
+
 sed -i "s/tag: .*/tag: $1/" $VALUES_FILE
 
 # Add the modified files
@@ -28,7 +33,7 @@ git add $VALUES_FILE
 git commit -m "Update Docker image tag to $1"
 
 # Push the changes back to the repository
-git push
+git push -u origin main 
 
 # Cleanup: remove the temporary directory
 rm -rf /tmp/temp_repo
