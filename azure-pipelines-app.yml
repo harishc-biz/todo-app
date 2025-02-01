@@ -1,5 +1,5 @@
 trigger:
-- main
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -8,7 +8,6 @@ variables:
   imageName: 'todo-app'
 
 steps:
-
   - task: Docker@2
     displayName: 'Build and push an image to container registry'
     inputs:
@@ -17,19 +16,20 @@ steps:
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
 
-  - task: CmdLine@2
-    inputs:
-      script: |
-        cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
-        git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
-        git fetch --all
-        git checkout main
-        git pull origin main
-        VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
-        sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
-        git config --global user.email "harishdravid9845@gmail.com"
-        git config --global user.name "harishc-biz"
-        git add --all
-        git commit -m "Latest Values file updated with tag $(Build.BuildId)"
-        git push origin main
-        echo "Values file updated successfully"
+  - script: |
+      cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
+      git remote set-url origin https://$(github-token)@github.com/harishc-biz/todo-app.git
+      git fetch --all
+      git checkout main
+      git pull origin main
+      VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
+      sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
+      git config --global user.email "harishdravid9845@gmail.com"
+      git config --global user.name "harishc-biz"
+      git add --all
+      git commit -m "Latest Values file updated with tag $(Build.BuildId)"
+      git push origin main
+      echo "Values file updated successfully"
+    env:
+      github-token: $(github-token) # Ensure this secret is defined in Azure DevOps
+    displayName: 'Update Helm Chart Values'
