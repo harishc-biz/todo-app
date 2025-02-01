@@ -7,9 +7,8 @@ pool:
 variables:
   imageName: 'todo-app'
 
-
 stages:
-- stage: Docker Build and Push
+- stage: Docker_Build_and_Push
   displayName: 'Build and Push Docker Image'
   jobs: 
   - job: Build
@@ -23,40 +22,13 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
 
-- stage: Helm Chart Update
+- stage: Helm_Chart_Update
   displayName: 'Update Helm Chart'
   jobs:
-  - job: Update values file
+  - job: Update_values_file
     displayName: 'Update values file'
     steps:
     - task: ShellScript@2
       inputs:
         scriptPath: 'update-values.sh'
         args: '$(Build.BuildId)'
-
-
-  # - script: |
-  #     cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
-      
-  #     git checkout main
-      
-  #     git pull
-      
-  #     VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
-      
-  #     # Update the image tag in the values file
-  #     sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
-      
-  #     # Configure Git
-  #     git config --global user.email "harishdravid9845@gmail.com"
-  #     git config --global user.name "harishc-biz"
-      
-  #     git login -u harishc-biz -p $(System.AccessToken)
-
-  #     git status
-      
-  #     git add --all
-      
-  #     git commit -m "Latest Values file updated with tag $(Build.BuildId)"
-      
-  #     git push origin main
