@@ -22,6 +22,7 @@ fi
 
 # Step 1: Update the image tag in values.yaml
 sed -i "s/^\( *tag: *\).*/\1\"$NEW_TAG\"/" "$VALUES_FILE"
+
 echo "Updated $VALUES_FILE with new image tag: $NEW_TAG"
 
 # Step 2: Package the Helm chart

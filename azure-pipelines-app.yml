@@ -16,9 +16,40 @@ steps:
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
 
+  # - task: CmdLine@2
+  #   displayName: 'Update image tag in dev-values.yaml'
+  #   inputs:
+  #     script: |
+  #       chmod +x update-image-tag.sh
+  #       ./update-image-tag.sh $(Build.BuildId)
+
   - task: CmdLine@2
-    displayName: 'Update image tag in dev-values.yaml'
+    displayName: 'Update the value yaml with new image tag'
     inputs:
       script: |
-        chmod +x update-image-tag.sh
-        ./update-image-tag.sh $(Build.BuildId)
+        # Navigate to the Helm chart directory
+        cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
+
+        git checkout main
+
+        VALUES_FILE="$(system.defaultWorkingDirectory)/helm_chart/todo-app/dev-values.yml"
+
+        sed -i "s/^\( *tag: *\).*/\1\"$(Build.BuildId)\"/" "$VALUES_FILE"
+
+        # Configure Git
+        git config --global user.email "harishdravid9845@gmail.com"
+        git config --global user.name "harishc-biz"
+
+        git pull origin main
+
+        git status
+
+        git add --all
+
+        git status
+
+        git commit -m "Latest Values file updated with tag $(Build.BuildId)"
+
+        git push -u origin main
+
+        echo "Values file updated successfully"
