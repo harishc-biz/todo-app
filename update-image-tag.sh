@@ -9,8 +9,8 @@ fi
 
 NEW_TAG=$1
 CHART_DIR="helm_chart"
-VALUES_FILE="$CHART_DIR/dev-values.yaml"
 HELM_REPO_NAME="todo-repo"
+VALUES_FILE="$CHART_DIR/$HELM_REPO_NAME/dev-values.yaml"
 HELM_REPO_URL="https://github.com/harishc-biz/todo-app" # Replace with your Helm repo URL
 HELM_CHART_VERSION="0.1.0" # Update this as needed
 
