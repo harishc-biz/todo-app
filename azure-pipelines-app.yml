@@ -28,6 +28,7 @@ steps:
     inputs:
       script: |
         cd "$(system.defaultWorkingDirectory)/helm_chart/todo-app"
+        git remote set-url origin https://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@github.com/harishc-biz/todo-app.git
         git fetch --all
         git checkout main
         git pull origin main

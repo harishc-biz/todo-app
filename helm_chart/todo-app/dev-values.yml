@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: acrtododev.azurecr.io/todo-app
   pullPolicy: IfNotPresent
-  tag: "97"
+  tag: "111"
 
 
 imagePullSecrets: 
