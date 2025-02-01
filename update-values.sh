@@ -1,30 +1,29 @@
 #!/bin/bash
 
-# Path to the dev-values.yml file
+set -x
+
+# Set the repository URL
+REPO_URL="https://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@github.com/harishc-biz/todo-app.git"
 VALUES_FILE="helm_chart/todo-app/dev-values.yml"
 
-# Extract the build number from the arguments
-BUILD_NUMBER=$1
+# Clone the git repository into the /tmp directory
+git clone "$REPO_URL" /tmp/temp_repo
 
-if [ -z "$BUILD_NUMBER" ]; then
-  echo "Build number not provided"
-  exit 1
-fi
+# Navigate into the cloned repository directory
+cd /tmp/temp_repo
 
-# Update the Docker image tag number in the dev-values.yml file
-sed -i "s/tag: .*/tag: $BUILD_NUMBER/" $VALUES_FILE
+# Make changes to the Kubernetes manifest file(s)
+# For example, let's say you want to change the image tag in a deployment.yaml file
+sed -i "s/tag: .*/tag: $1/" $VALUES_FILE
 
-echo "Updated Docker image tag to $BUILD_NUMBER in $VALUES_FILE"
-
-# Configure Git
-git config --global user.email "harishdravid9845@gmail.com"
-git config --global user.name "harishc-biz"
-
-# Add the changes to git
-git add $VALUES_FILE
+# Add the modified files
+git add .
 
 # Commit the changes
-git commit -m "Update Docker image tag to $BUILD_NUMBER"
+git commit -m "Update Docker image tag to $1"
 
-# Push the changes to the repository
-git push origin main
+# Push the changes back to the repository
+git push
+
+# Cleanup: remove the temporary directory
+rm -rf /tmp/temp_repo
