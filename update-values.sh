@@ -4,7 +4,7 @@ set -e  # Exit immediately if a command exits with a non-zero status
 set -x  # Print commands and their arguments as they are executed
 
 # Set the repository URL with the PAT
-REPO_URL="https://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@github.com/harishc-biz/todo-app.git"
+REPO_URL="https://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@github.com/harishc-biz/todo-app.git"
 VALUES_FILE="helm_chart/todo-app/dev-values.yml"
 
 # Configure Git
