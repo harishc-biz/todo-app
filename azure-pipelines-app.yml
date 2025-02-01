@@ -28,6 +28,7 @@ stages:
   - job: Update_values_file
     displayName: 'Update values file'
     steps:
+    - checkout: self
     - task: ShellScript@2
       inputs:
         scriptPath: 'update-values.sh'
